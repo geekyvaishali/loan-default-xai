@@ -1,0 +1,5 @@
+venv/
+data/raw/*.csv
+data/processed/
+__pycache__/
+.vs/

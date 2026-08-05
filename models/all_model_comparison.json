@@ -1,0 +1,30 @@
+[
+  {
+    "model": "LogisticRegression",
+    "roc_auc": 0.7571,
+    "precision": 0.2284,
+    "recall": 0.6854,
+    "f1": 0.3426
+  },
+  {
+    "model": "RandomForest",
+    "roc_auc": 0.7444,
+    "precision": 0.6268,
+    "recall": 0.0292,
+    "f1": 0.0557
+  },
+  {
+    "model": "XGBoost",
+    "roc_auc": 0.7548,
+    "precision": 0.235,
+    "recall": 0.6528,
+    "f1": 0.3456
+  },
+  {
+    "model": "LightGBM",
+    "roc_auc": 0.7567,
+    "precision": 0.2314,
+    "recall": 0.6704,
+    "f1": 0.3441
+  }
+]
