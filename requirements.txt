@@ -12,3 +12,4 @@ plotly
 joblib
 pyarrow
 imbalanced-learn
+plotly
