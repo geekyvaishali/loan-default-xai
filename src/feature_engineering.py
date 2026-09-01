@@ -6,6 +6,7 @@ This reads data/raw/Loan_default.csv, engineers features, splits train/val,
 and saves everything to data/processed/ so Phase 3 can just load it.
 """
 
+import json
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -127,6 +128,14 @@ def main():
     joblib.dump(feature_columns, f"{PROCESSED_DIR}/feature_columns.pkl")
 
     print(f"Train: {X_train.shape}, Val: {X_val.shape}")
+        # Dataset snapshot stats (used by the app's top banner)
+    stats = {
+        "total_applicants": int(len(df)),
+        "default_rate_pct": round(float(y.mean() * 100), 1),
+        "num_features": len(feature_columns)
+    }
+    with open(f"{PROCESSED_DIR}/dataset_stats.json", "w") as f:
+        json.dump(stats, f)
     print(f"Saved processed data + feature_columns.pkl to {PROCESSED_DIR}/")
 
 
