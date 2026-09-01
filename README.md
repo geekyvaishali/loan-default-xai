@@ -3,7 +3,7 @@
 Predicts an applicant's probability of loan default and explains *why* using
 SHAP and LIME, wrapped in an interactive Streamlit app.
 
-**Live demo:** _add your Streamlit Cloud link here_
+**Live demo:**https://loan-default-xai-poguzlzskanu6scamkbk3j.streamlit.app/
 **Author:** Vaishali Singh
 
 ## Problem Statement
@@ -36,18 +36,32 @@ explanation, mirroring how explainability is used in real credit-risk systems.
 
 | Model | ROC-AUC | Precision | Recall | F1 |
 |---|---|---|---|---|
-| Logistic Regression | _fill in_ | | | |
-| Random Forest | _fill in_ | | | |
-| XGBoost (tuned) | _fill in_ | | | |
-| LightGBM | _fill in_ | | | |
+| Logistic Regression | 0.7571 | 0.2284 | 0.6854 | 0.3426 |
+| Random Forest | 0.7444 | 0.6268 | 0.0292 | 0.0557 |
+| XGBoost | 0.7548 | 0.2350 | 0.6528 | 0.3456 |
+| LightGBM | 0.7567 | 0.2314 | 0.6704 | 0.3441 |
 
+**Selected model:** Logistic Regression (highest validation ROC-AUC)
 _(Run `src/train_model.py` and copy numbers from `models/model_card.md`)_
 
 ## SHAP Insight Summary
 
-_Fill in after running `notebooks/02_explainability.py` — top 3-5 global drivers
-and whether they match domain intuition (e.g. higher DTI ratio, lower credit
-score, higher loan-to-income ratio typically increase default risk)._
+The SHAP analysis identified **Age**, **InterestRate**, and **LoanToIncomeRatio**
+as the top 3 global drivers of default risk:
+
+- **InterestRate**: Higher interest rates strongly increase predicted default
+  risk — consistent with lenders pricing riskier applicants at higher rates.
+- **LoanToIncomeRatio** (engineered feature): A higher loan amount relative to
+  income increases risk, confirming that this custom ratio adds real predictive
+  signal beyond the raw features.
+- **Age**: Age has a strong influence on predicted risk, reflecting patterns
+  around credit history length and income stability across age groups.
+
+These findings align with standard credit-risk intuition, giving confidence
+that the model is learning genuine patterns rather than spurious correlations.
+Cross-checking with LIME on individual applicants showed broadly consistent
+attributions, with minor differences expected since LIME approximates locally
+while SHAP computes exact contributions for tree-based/linear models.
 
 ## Screenshot / Demo
 
