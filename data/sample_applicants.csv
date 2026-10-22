@@ -1,0 +1,26 @@
+Age,Income,LoanAmount,CreditScore,MonthsEmployed,NumCreditLines,InterestRate,LoanTerm,DTIRatio,Education,EmploymentType,MaritalStatus,HasMortgage,HasDependents,LoanPurpose,HasCoSigner
+18,126272,93650,775,100,3,13.23,36,0.28,Bachelor's,Part-time,Divorced,Yes,No,Education,No
+53,121930,8649,820,15,4,16.03,36,0.4,High School,Full-time,Single,No,Yes,Home,No
+48,43858,40135,464,31,2,19.11,36,0.36,Bachelor's,Part-time,Divorced,Yes,Yes,Business,Yes
+20,70296,120427,589,30,4,11.89,36,0.59,High School,Part-time,Single,Yes,Yes,Business,Yes
+65,115098,23939,589,45,2,8.96,12,0.54,High School,Full-time,Divorced,Yes,No,Auto,Yes
+29,35010,183419,598,0,2,2.14,60,0.7,Master's,Self-employed,Divorced,Yes,Yes,Education,Yes
+31,100041,67936,339,51,1,19.4,12,0.34,PhD,Full-time,Single,No,No,Other,No
+27,74212,230057,503,45,3,3.78,12,0.87,PhD,Part-time,Divorced,Yes,Yes,Education,No
+35,140199,46575,620,70,2,13.27,60,0.53,Bachelor's,Part-time,Divorced,Yes,Yes,Business,No
+27,114787,158255,805,69,2,9.0,24,0.64,Bachelor's,Self-employed,Single,Yes,No,Business,No
+36,46307,131258,430,33,3,21.34,36,0.65,PhD,Full-time,Single,Yes,Yes,Auto,Yes
+60,127731,229695,654,51,3,23.86,48,0.22,Bachelor's,Unemployed,Single,Yes,Yes,Auto,Yes
+41,122881,156358,720,60,4,9.33,36,0.22,Bachelor's,Self-employed,Divorced,No,Yes,Auto,No
+66,43760,216849,808,100,2,22.65,60,0.47,PhD,Part-time,Single,No,No,Business,No
+41,84952,118722,395,9,2,9.76,60,0.52,Bachelor's,Self-employed,Married,Yes,No,Other,Yes
+32,122210,58445,670,73,4,20.68,24,0.32,PhD,Full-time,Single,Yes,No,Other,Yes
+59,46260,51368,472,9,2,20.37,48,0.24,PhD,Part-time,Divorced,Yes,No,Home,No
+60,48048,217201,542,31,2,17.07,48,0.5,Bachelor's,Unemployed,Single,No,No,Other,Yes
+62,37397,54786,307,53,3,7.26,24,0.63,PhD,Self-employed,Married,Yes,No,Business,No
+64,16025,184034,697,97,3,5.17,12,0.28,Master's,Unemployed,Married,No,Yes,Business,No
+19,82201,134223,317,40,2,11.76,60,0.27,High School,Self-employed,Married,Yes,No,Auto,Yes
+44,17180,73076,505,59,3,5.49,48,0.86,High School,Full-time,Divorced,Yes,No,Education,Yes
+31,93667,105601,573,69,3,22.09,24,0.68,Bachelor's,Unemployed,Married,Yes,No,Education,Yes
+30,71130,200275,667,91,4,6.12,24,0.13,PhD,Unemployed,Married,No,Yes,Business,Yes
+30,39885,115973,557,47,1,2.7,48,0.89,High School,Full-time,Single,Yes,No,Home,No

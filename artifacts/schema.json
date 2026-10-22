@@ -1,0 +1,203 @@
+{
+  "raw_features": [
+    "Age",
+    "Income",
+    "LoanAmount",
+    "CreditScore",
+    "MonthsEmployed",
+    "NumCreditLines",
+    "InterestRate",
+    "LoanTerm",
+    "DTIRatio",
+    "Education",
+    "EmploymentType",
+    "MaritalStatus",
+    "HasMortgage",
+    "HasDependents",
+    "LoanPurpose",
+    "HasCoSigner"
+  ],
+  "numeric": [
+    "Age",
+    "Income",
+    "LoanAmount",
+    "CreditScore",
+    "MonthsEmployed",
+    "NumCreditLines",
+    "InterestRate",
+    "LoanTerm",
+    "DTIRatio"
+  ],
+  "categorical": [
+    "Education",
+    "EmploymentType",
+    "MaritalStatus",
+    "HasMortgage",
+    "HasDependents",
+    "LoanPurpose",
+    "HasCoSigner"
+  ],
+  "hard_bounds": {
+    "Age": [
+      18,
+      100
+    ],
+    "Income": [
+      1,
+      10000000
+    ],
+    "LoanAmount": [
+      1,
+      10000000
+    ],
+    "CreditScore": [
+      300,
+      850
+    ],
+    "MonthsEmployed": [
+      0,
+      720
+    ],
+    "NumCreditLines": [
+      0,
+      50
+    ],
+    "InterestRate": [
+      0,
+      100
+    ],
+    "LoanTerm": [
+      1,
+      480
+    ],
+    "DTIRatio": [
+      0,
+      10
+    ]
+  },
+  "training_range": {
+    "Age": [
+      18,
+      69
+    ],
+    "Income": [
+      15000,
+      149999
+    ],
+    "LoanAmount": [
+      5000,
+      249999
+    ],
+    "CreditScore": [
+      300,
+      849
+    ],
+    "MonthsEmployed": [
+      0,
+      119
+    ],
+    "NumCreditLines": [
+      1,
+      4
+    ],
+    "InterestRate": [
+      2.0,
+      25.0
+    ],
+    "LoanTerm": [
+      12,
+      60
+    ],
+    "DTIRatio": [
+      0.1,
+      0.9
+    ]
+  },
+  "allowed_categories": {
+    "Education": [
+      "Bachelor's",
+      "High School",
+      "Master's",
+      "PhD"
+    ],
+    "EmploymentType": [
+      "Full-time",
+      "Part-time",
+      "Self-employed",
+      "Unemployed"
+    ],
+    "MaritalStatus": [
+      "Divorced",
+      "Married",
+      "Single"
+    ],
+    "HasMortgage": [
+      "No",
+      "Yes"
+    ],
+    "HasDependents": [
+      "No",
+      "Yes"
+    ],
+    "LoanPurpose": [
+      "Auto",
+      "Business",
+      "Education",
+      "Home",
+      "Other"
+    ],
+    "HasCoSigner": [
+      "No",
+      "Yes"
+    ]
+  },
+  "model_input_columns": [
+    "Age",
+    "Income",
+    "LoanAmount",
+    "CreditScore",
+    "MonthsEmployed",
+    "NumCreditLines",
+    "InterestRate",
+    "LoanTerm",
+    "DTIRatio",
+    "LoanToIncomeRatio",
+    "InterestBurden",
+    "Education_Bachelor_s",
+    "Education_High_School",
+    "Education_Master_s",
+    "Education_PhD",
+    "EmploymentType_Full_time",
+    "EmploymentType_Part_time",
+    "EmploymentType_Self_employed",
+    "EmploymentType_Unemployed",
+    "MaritalStatus_Divorced",
+    "MaritalStatus_Married",
+    "MaritalStatus_Single",
+    "HasMortgage_No",
+    "HasMortgage_Yes",
+    "HasDependents_No",
+    "HasDependents_Yes",
+    "LoanPurpose_Auto",
+    "LoanPurpose_Business",
+    "LoanPurpose_Education",
+    "LoanPurpose_Home",
+    "LoanPurpose_Other",
+    "HasCoSigner_No",
+    "HasCoSigner_Yes",
+    "EmploymentLengthBucket_1_3yr",
+    "EmploymentLengthBucket_3_7yr",
+    "EmploymentLengthBucket_7yr_plus",
+    "EmploymentLengthBucket_under_1yr",
+    "AgeBucket_18_25",
+    "AgeBucket_26_35",
+    "AgeBucket_36_45",
+    "AgeBucket_46_55",
+    "AgeBucket_56_plus",
+    "CreditScoreBucket_Excellent",
+    "CreditScoreBucket_Fair",
+    "CreditScoreBucket_Good",
+    "CreditScoreBucket_Poor",
+    "CreditScoreBucket_VeryGood"
+  ]
+}

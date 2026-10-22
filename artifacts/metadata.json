@@ -1,0 +1,62 @@
+{
+  "model_version": "20261022-061642-1d7556a",
+  "trained_at_utc": "2026-10-22T06:16:42+00:00",
+  "selected_model": "logistic_regression",
+  "selection_reason": "best CV roc_auc is logistic_regression (0.7556); one-standard-error rule picked the simplest model within 1 std of it (logistic_regression eligible)",
+  "threshold": {
+    "threshold": 0.14212899067504509,
+    "policy": "recall_target",
+    "assumption": "highest precision subject to recall >= 0.60 on the validation split"
+  },
+  "calibration_method": "sigmoid",
+  "config": {
+    "random_state": 42,
+    "test_size": 0.2,
+    "val_size": 0.2,
+    "cv_folds": 3,
+    "selection_metric": "roc_auc",
+    "one_se_rule": true,
+    "calibration_method": "sigmoid",
+    "threshold_policy": "recall_target",
+    "target_recall": 0.6,
+    "cost_fn": 5.0,
+    "cost_fp": 1.0,
+    "models": [
+      "logistic_regression",
+      "random_forest",
+      "hist_gradient_boosting",
+      "xgboost",
+      "lightgbm"
+    ],
+    "n_jobs": 1
+  },
+  "skipped_models": {},
+  "data": {
+    "file": "Loan_default.csv",
+    "sha256": "1d7556a9071e7f9e872dc05a0cad174229fb1164b1cf3470ad35eed195c24278",
+    "n_rows": 255347,
+    "default_rate": 0.11612824901017048,
+    "looks_synthetic": true
+  },
+  "splits": {
+    "train": 153207,
+    "val": 51070,
+    "test": 51070,
+    "train_default_rate": 0.11612393689583374,
+    "val_default_rate": 0.11613471705502251,
+    "test_default_rate": 0.11613471705502251
+  },
+  "environment": {
+    "python": "3.13.5",
+    "sklearn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.5.4"
+  },
+  "training_seconds": 281.2,
+  "headline_test_metrics": {
+    "roc_auc": 0.7615558011335666,
+    "pr_auc": 0.3362520617507041,
+    "brier": 0.090301019912506,
+    "ece": 0.0035529919903101305
+  }
+}
