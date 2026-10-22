@@ -3,3 +3,7 @@ data/raw/*.csv
 data/processed/
 __pycache__/
 .vs/
+*.pyc
+.env
+.pytest_cache/
+.ipynb_checkpoints/

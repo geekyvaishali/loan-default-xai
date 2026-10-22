@@ -1,4 +1,8 @@
 # Loan Default Risk Predictor with Explainable AI
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Live-brightgreen)
 
 Predicts an applicant's probability of loan default and explains *why* using
 SHAP and LIME, wrapped in an interactive Streamlit app.
