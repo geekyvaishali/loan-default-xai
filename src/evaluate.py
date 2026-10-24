@@ -94,3 +94,21 @@ def bootstrap_ci(y: np.ndarray, p: np.ndarray, metric=roc_auc_score, n: int = 20
         if y[i].min() != y[i].max():
             vals.append(metric(y[i], p[i]))
     return [float(np.percentile(vals, 2.5)), float(np.percentile(vals, 97.5))]
+
+
+def permutation_importance(predict_fn, X, y, features, n_repeats: int = 3, seed: int = 0) -> list[dict]:
+    """Drop in ROC-AUC when one raw input column is shuffled (works for any model).
+
+    Computed on held-out rows; it measures what the *model* relies on, not causal effect."""
+    rng = np.random.default_rng(seed)
+    y = np.asarray(y)
+    base = roc_auc_score(y, predict_fn(X))
+    rows = []
+    for col in features:
+        drops = []
+        for _ in range(n_repeats):
+            shuffled = X.copy()
+            shuffled[col] = rng.permutation(shuffled[col].to_numpy())
+            drops.append(base - roc_auc_score(y, predict_fn(shuffled)))
+        rows.append({"feature": col, "auc_drop_mean": float(np.mean(drops)), "auc_drop_std": float(np.std(drops))})
+    return sorted(rows, key=lambda r: r["auc_drop_mean"], reverse=True)

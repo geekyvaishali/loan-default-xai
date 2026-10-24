@@ -7,3 +7,7 @@ __pycache__/
 .env
 .pytest_cache/
 .ipynb_checkpoints/
+data/loanwise.db
+data/loanwise.db-journal
+data/demo_credentials.txt
+.qodo/

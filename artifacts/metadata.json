@@ -1,6 +1,6 @@
 {
-  "model_version": "20261022-061642-1d7556a",
-  "trained_at_utc": "2026-10-22T06:16:42+00:00",
+  "model_version": "20261023-193630-1d7556a",
+  "trained_at_utc": "2026-10-23T19:36:30+00:00",
   "selected_model": "logistic_regression",
   "selection_reason": "best CV roc_auc is logistic_regression (0.7556); one-standard-error rule picked the simplest model within 1 std of it (logistic_regression eligible)",
   "threshold": {
@@ -48,11 +48,11 @@
   },
   "environment": {
     "python": "3.13.5",
-    "sklearn": "1.9.1",
-    "pandas": "3.0.6",
-    "numpy": "2.5.4"
+    "sklearn": "1.7.0",
+    "pandas": "3.0.5",
+    "numpy": "2.3.0"
   },
-  "training_seconds": 281.2,
+  "training_seconds": 468.4,
   "headline_test_metrics": {
     "roc_auc": 0.7615558011335666,
     "pr_auc": 0.3362520617507041,
