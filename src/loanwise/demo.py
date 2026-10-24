@@ -70,3 +70,15 @@ def seed(db, predictor, n_applications: int = 40, seed_value: int = 7, now: floa
                 decision = "Approved" if rng.random() < 0.6 else "Rejected"
                 apps.record_decision(otoken, app_id, decision, f"Demo decision recorded after manual review ({decision.lower()}).")
     return {"applications": created, "officer": DEMO_OFFICER, "customers": DEMO_CUSTOMERS, "password": DEMO_PASSWORD}
+
+
+def ensure_seeded(db, predictor) -> bool:
+    """Seed the synthetic demo data only if the database has no users yet. Returns True if it seeded.
+
+    Used by hosted demos whose disk is wiped on restart, so the app is never empty on first visit.
+    """
+    with db.connect() as conn:
+        if conn.execute("SELECT COUNT(*) FROM users").fetchone()[0] > 0:
+            return False
+    seed(db, predictor)
+    return True

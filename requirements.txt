@@ -1,16 +1,8 @@
-# Core (new pipeline). Developed/tested with: scikit-learn 1.8.0, pandas 3.0.2, numpy 2.4.4, Python 3.12
-pandas
-numpy
-scikit-learn>=1.2
-joblib
-# Optional extra candidate models (skipped automatically if not installed)
-xgboost
-lightgbm
-# Explainability + dashboard (used by app/ and src/explain.py, not by the tests)
-shap
-lime
-streamlit
-matplotlib
-seaborn
-plotly
-pyarrow
+# Runtime for LoanWise (what a hosted demo needs). Pinned to the versions this project was tested with
+# (Python 3.13; the committed artifacts/model.joblib was trained with scikit-learn 1.7.0).
+streamlit==1.60.0
+pandas==3.0.5
+numpy==2.3.0
+scikit-learn==1.7.0
+joblib==1.5.1
+plotly==6.9.0

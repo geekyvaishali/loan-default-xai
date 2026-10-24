@@ -39,6 +39,9 @@ def render_landing() -> None:
     ui.note("<b>Portfolio demonstration.</b> LoanWise is not a bank and cannot approve or fund loans. "
             "Risk scores come from an experimental model trained on a dataset that appears to be synthetic; "
             "they must not be used for real credit decisions.")
+    if state.flag("LOANWISE_PUBLIC_DEMO"):
+        ui.note("<b>Public sandbox.</b> All records are synthetic and are wiped when the app restarts. "
+                "Please do not enter real personal or financial information.")
 
 
 def render_login(svc: state.Services, portal: str) -> None:
@@ -50,11 +53,13 @@ def render_login(svc: state.Services, portal: str) -> None:
     with mid:
         with st.container(border=True):
             st.subheader(f"{label} sign in")
-            if portal == "customer":
+            if portal == "customer" and not state.flag("LOANWISE_PUBLIC_DEMO"):
                 tab_in, tab_new = st.tabs(["Sign in", "Create account"])
             else:
                 tab_in, tab_new = st.container(), None
-                st.caption("Officer accounts are issued by an administrator and cannot be created here.")
+                st.caption("Officer accounts are issued by an administrator and cannot be created here."
+                           if portal == "officer" else
+                           "This is a public sandbox: sign-up is disabled. Use the demo account below.")
             with tab_in:
                 with st.form(f"login_{portal}"):
                     email = st.text_input("Email")
@@ -85,7 +90,8 @@ def render_login(svc: state.Services, portal: str) -> None:
                                 st.rerun()
                         except LoanWiseError as exc:
                             ui.show_error(exc)
-            if os.environ.get("LOANWISE_DEMO_MODE") == "1":
+            if state.flag("LOANWISE_DEMO_MODE") or state.flag("LOANWISE_PUBLIC_DEMO"):
                 who = DEMO_CUSTOMERS[0] if portal == "customer" else DEMO_OFFICER
-                ui.note(f"<b>Demo mode.</b> Synthetic demo account (local use only): <code>{who}</code> / "
+                scope = "public sandbox" if state.flag("LOANWISE_PUBLIC_DEMO") else "local use only"
+                ui.note(f"<b>Demo account</b> ({scope}, synthetic data only): <code>{who}</code> / "
                         f"<code>{DEMO_PASSWORD}</code>")

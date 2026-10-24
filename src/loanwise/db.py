@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import os
 import sqlite3
+import tempfile
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -123,3 +124,12 @@ class Database:
             conn.executescript(_SCHEMA)
             if conn.execute("SELECT COUNT(*) FROM schema_version").fetchone()[0] == 0:
                 conn.execute("INSERT INTO schema_version(version) VALUES (?)", (SCHEMA_VERSION,))
+
+
+def open_database(path: str | Path = DEFAULT_DB_PATH) -> Database:
+    """Open the database; if that location is not writable (some hosts mount the repo read-only),
+    fall back to the temp directory so the app still starts (data is then ephemeral)."""
+    try:
+        return Database(path)
+    except (OSError, sqlite3.OperationalError):
+        return Database(Path(tempfile.gettempdir()) / "loanwise.db")

@@ -194,6 +194,11 @@ with st.sidebar:
 
 st.markdown(f'<h1>Loan Default Risk <span class="accent">Predictor</span></h1>', unsafe_allow_html=True)
 st.caption("Enter applicant details, get a risk score and a SHAP explanation of why.")
+st.warning(
+    "**Experimental model on a dataset that appears to be synthetic.** The data appears to be synthetic, and this model was trained with "
+    "class weights, so its score overstates the real default rate (average score about 42% against 11.6% actual). "
+    "Read it as a relative ranking, not a probability. It is not a lending decision."
+)
 
 if dataset_stats:
     st.markdown(f"""
@@ -279,11 +284,11 @@ with tab_predict:
             st.error(f"Prediction failed — check that models/ and data/processed/ exist. Error: {e}")
             st.stop()
 
-        decision = "REJECT" if proba >= threshold + 0.2 else "MANUAL REVIEW" if proba >= threshold else "APPROVE"
+        decision = "HIGH RISK" if proba >= threshold + 0.2 else "ELEVATED RISK" if proba >= threshold else "LOWER RISK"
         st.session_state.history.insert(0, {
             "Time": datetime.now().strftime("%H:%M:%S"),
             "Age": age, "Income": income, "LoanAmount": loan_amount,
-            "Risk %": round(proba * 100, 1), "Decision": decision
+            "Score %": round(proba * 100, 1), "Risk band": decision
         })
         st.session_state.history = st.session_state.history[:5]
 
@@ -316,13 +321,13 @@ with tab_predict:
                                      font={'color': TEXT, 'size': 14})
             st.plotly_chart(fig_gauge, use_container_width=True)
 
-            if decision == "REJECT":
-                st.error(":material/cancel: REJECT — high default risk")
-            elif decision == "MANUAL REVIEW":
-                st.warning(":material/error: MANUAL REVIEW — borderline risk")
+            if decision == "HIGH RISK":
+                st.error(":material/error: HIGH RISK band: a flag for human review, not a decision")
+            elif decision == "ELEVATED RISK":
+                st.warning(":material/info: ELEVATED RISK band: above the review threshold")
             else:
-                st.success(":material/check_circle: APPROVE — low default risk")
-            st.caption(f"Decision threshold: {threshold}")
+                st.success(":material/check_circle: LOWER RISK band: below the review threshold")
+            st.caption(f"Review threshold on the model score: {threshold}. Bands are display categories, not lending decisions.")
 
             report = f"""Loan Default Risk Report
 Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}
@@ -334,9 +339,9 @@ Applicant Profile:
 - Marital Status: {marital_status} | Loan Purpose: {loan_purpose}
 
 Result:
-- Predicted Default Probability: {proba*100:.2f}%
-- Decision Threshold: {threshold}
-- Recommendation: {decision}
+- Model risk score (NOT a calibrated probability): {proba*100:.2f}%
+- Review threshold on the score: {threshold}
+- Risk band: {decision} (not a lending decision)
 """
             st.download_button(":material/download: Download Report", report, file_name="loan_risk_report.txt")
             st.markdown('</div>', unsafe_allow_html=True)
@@ -389,31 +394,31 @@ with tab_batch:
                 probs = model.predict_proba(encoded_batch)[:, 1]
 
                 results = batch_df.copy()
-                results["Default_Probability_%"] = np.round(probs * 100, 2)
-                results["Decision"] = np.select(
+                results["Risk_Score_%"] = np.round(probs * 100, 2)
+                results["Risk band"] = np.select(
                     [probs >= threshold + 0.2, probs >= threshold],
-                    ["REJECT", "MANUAL REVIEW"],
-                    default="APPROVE"
+                    ["HIGH RISK", "ELEVATED RISK"],
+                    default="LOWER RISK"
                 )
 
                 st.success(f":material/task_alt: Scored {len(results)} applicants.")
                 mcol1, mcol2, mcol3 = st.columns(3)
-                mcol1.metric("Approved", int((results['Decision'] == 'APPROVE').sum()))
-                mcol2.metric("Manual Review", int((results['Decision'] == 'MANUAL REVIEW').sum()))
-                mcol3.metric("Rejected", int((results['Decision'] == 'REJECT').sum()))
+                mcol1.metric("Lower risk", int((results['Risk band'] == 'LOWER RISK').sum()))
+                mcol2.metric("Elevated risk", int((results['Risk band'] == 'ELEVATED RISK').sum()))
+                mcol3.metric("High risk", int((results['Risk band'] == 'HIGH RISK').sum()))
 
                 st.dataframe(results, use_container_width=True, hide_index=True)
 
                 fig_hist = go.Figure(go.Histogram(
-                    x=results["Default_Probability_%"], nbinsx=30,
+                    x=results["Risk_Score_%"], nbinsx=30,
                     marker_color=TEAL
                 ))
                 fig_hist.add_vline(x=threshold * 100, line_dash="dash", line_color=WARN,
-                                    annotation_text="Decision threshold", annotation_font_color=TEXT)
+                                    annotation_text="Review threshold", annotation_font_color=TEXT)
                 fig_hist.update_layout(
-                    title="Distribution of Predicted Default Risk", height=320,
+                    title="Distribution of model risk scores", height=320,
                     paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                    font={'color': TEXT}, xaxis_title="Default Probability (%)", yaxis_title="Applicants"
+                    font={'color': TEXT}, xaxis_title="Model risk score (%)", yaxis_title="Applicants"
                 )
                 st.plotly_chart(fig_hist, use_container_width=True)
 
@@ -497,8 +502,8 @@ with tab_models:
 with tab_about:
     st.markdown("### Loan Default Risk Predictor with Explainable AI")
     st.markdown(
-        "This app predicts loan default probability and explains every "
-        "prediction using SHAP, so risk decisions aren't a black box."
+        "This app estimates a loan default risk score and explains every "
+        "prediction using SHAP. It is an educational demo, not a lending decision tool."
     )
 
     st.markdown(":material/route: **Pipeline**")

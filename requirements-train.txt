@@ -1,0 +1,9 @@
+# Training, extra candidate models and the original dashboard (app/app.py). Not needed by the hosted LoanWise demo.
+-r requirements.txt
+xgboost
+lightgbm
+shap
+lime
+matplotlib
+seaborn
+pyarrow
