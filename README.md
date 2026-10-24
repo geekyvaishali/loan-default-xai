@@ -4,13 +4,19 @@ An end-to-end, **educational** machine-learning project: a leakage-safe training
 
 > **Not a lending system.** This is a portfolio project. It is not a bank, not a lender, and not a validated or regulatory-compliant credit-decision tool. A model score never approves or rejects anyone; in LoanWise only a human officer can record a decision, with a reason.
 
+## Live demo
+
+**LoanWise (public sandbox): https://YOUR-APP-NAME.streamlit.app** (replace with your Streamlit link after deploying; see "Deploy a public demo" below)
+
+The sandbox shows a synthetic dataset only. Sign in with the demo accounts shown on each login page. Please do not type real personal or financial information: every visitor shares one temporary database that is wiped whenever the app restarts, and the officer demo account can see all applications in it.
+
 ## What is in the repository
 
 | Part | Entry point | What it is |
 |---|---|---|
 | ML pipeline | `python -m src.train` | Leakage-safe training, evaluation, calibration, versioned artifacts, generated model card |
 | **LoanWise** | `streamlit run app/loanwise_app.py` | Landing page with a **Customer portal** and a **Bank officer portal**, SQLite persistence, role-based access |
-| Original analytics app | `streamlit run app/app.py` | The first version of the dashboard (uses the older files in `models/`; kept for reference) |
+| Original analytics app | `streamlit run app/app.py` | The first version of the dashboard, kept for reference. It still uses the first model's class-weighted score (see `AUDIT.md`) and needs `requirements-train.txt` |
 
 ## Architecture
 
@@ -46,8 +52,25 @@ streamlit run app/loanwise_app.py
 ```
 
 * Officer accounts are never self-registered. Create one with `python -m src.loanwise.create_officer`.
-* Demo accounts and their fixed demo password exist **only if you run `seed_demo`**, are for local use, and are labelled as demo data in the app. Do not seed a public deployment.
-* The database is `data/loanwise.db` (override with `LOANWISE_DB`). It is git-ignored. On Streamlit Community Cloud the file system is ephemeral, so records there do not persist across redeploys; use a hosted database for anything real.
+* The database is `data/loanwise.db` (override with `LOANWISE_DB`). It is git-ignored.
+
+Requirements files: `requirements.txt` is the slim, version-pinned runtime for the hosted demo (Streamlit, pandas, numpy, scikit-learn, joblib, plotly); `requirements-train.txt` adds training extras and the original dashboard's packages (XGBoost, LightGBM, SHAP, LIME, matplotlib, ...); `requirements-dev.txt` adds pytest. The committed `artifacts/model.joblib` was trained with scikit-learn 1.7.0, so the runtime pins that version. If you retrain with a different version, update the pin.
+
+## Deploy a public demo (Streamlit Community Cloud)
+
+1. Push to GitHub and merge to `main`. Commit `artifacts/` (trained locally, see above) but never `data/raw/`, `data/loanwise.db` or any secrets.
+2. At share.streamlit.io choose **Create app**, pick this repository and the `main` branch, and set **Main file path** to `app/loanwise_app.py`.
+3. Open **Advanced settings**: choose **Python 3.13** and paste this into **Secrets**:
+
+   ```toml
+   LOANWISE_PUBLIC_DEMO = "1"
+   LOANWISE_AUTOSEED = "1"
+   ```
+
+   `LOANWISE_PUBLIC_DEMO` shows the public-sandbox notice and the demo accounts and disables sign-up. `LOANWISE_AUTOSEED` recreates the synthetic demo data whenever the app starts on an empty disk.
+4. Deploy, open the link, and put it in the **Live demo** line above.
+
+Limits of this setup: the database lives on the host's temporary disk, so all records are lost on every restart or redeploy (the app re-seeds itself); there is a single shared database for all visitors; and the demo accounts and password are public by design. For anything beyond a demo, use a hosted database, per-user accounts created by an administrator, and secrets from the platform.
 
 ## Model results (held-out test set, touched once)
 

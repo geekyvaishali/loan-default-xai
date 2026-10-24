@@ -10,9 +10,10 @@ import streamlit as st
 
 from ...config import ARTIFACT_DIR
 from ...predict import LoanRiskPredictor
+from .. import demo
 from ..applications import ApplicationService
 from ..auth import AuthService, User
-from ..db import DEFAULT_DB_PATH, Database
+from ..db import DEFAULT_DB_PATH, Database, open_database
 from ..errors import AuthError
 from . import components as ui
 
@@ -26,12 +27,29 @@ class Services:
     artifact_dir: Path
 
 
-@st.cache_resource(show_spinner=False)
+def setting(name: str, default: str | None = None) -> str | None:
+    """Environment variable first, then Streamlit secrets (used on Streamlit Community Cloud)."""
+    value = os.environ.get(name)
+    if value is not None:
+        return value
+    try:
+        return str(st.secrets[name]) if name in st.secrets else default
+    except Exception:   # no secrets file configured
+        return default
+
+
+def flag(name: str) -> bool:
+    return (setting(name) or "").strip() == "1"
+
+
+@st.cache_resource(show_spinner="Preparing the demo...")
 def get_services() -> Services:
-    artifact_dir = Path(os.environ.get("LOANWISE_ARTIFACTS", ARTIFACT_DIR))
-    db = Database(os.environ.get("LOANWISE_DB", DEFAULT_DB_PATH))
+    artifact_dir = Path(setting("LOANWISE_ARTIFACTS") or ARTIFACT_DIR)
+    db = open_database(setting("LOANWISE_DB") or DEFAULT_DB_PATH)
     auth = AuthService(db)
     predictor = LoanRiskPredictor.load(artifact_dir)
+    if flag("LOANWISE_AUTOSEED"):          # hosted demo: disk is wiped on restart, so re-create synthetic data
+        demo.ensure_seeded(db, predictor)
     return Services(db, auth, ApplicationService(db, auth, predictor), predictor, artifact_dir)
 
 

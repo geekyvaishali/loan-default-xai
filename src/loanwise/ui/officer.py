@@ -327,8 +327,8 @@ def analytics(svc, token, user) -> None:
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=[0, max(r["mean_predicted"] for r in raw) * 1.1], y=[0, max(r["mean_predicted"] for r in raw) * 1.1],
                                  name="Perfect", line=dict(color="#B0B7C0", dash="dash")))
-        fig.add_trace(go.Scatter(x=[r["mean_predicted"] for r in raw], y=[r["observed_rate"] for r in raw], name="Raw", mode="lines+markers"))
-        fig.add_trace(go.Scatter(x=[r["mean_predicted"] for r in cal], y=[r["observed_rate"] for r in cal], name="Calibrated", mode="lines+markers"))
+        fig.add_trace(go.Scatter(x=[r["mean_predicted"] for r in raw], y=[r["observed_rate"] for r in raw], name="Raw", mode="lines+markers", line=dict(color=theme.WARN)))
+        fig.add_trace(go.Scatter(x=[r["mean_predicted"] for r in cal], y=[r["observed_rate"] for r in cal], name="Calibrated", mode="lines+markers", line=dict(color=theme.TEAL)))
         fig.update_layout(height=380, xaxis_title="Mean predicted probability (decile)", yaxis_title="Observed default rate", **LAYOUT)
         ui.chart(fig)
         st.caption(f"Raw ECE {t['raw']['ece']:.4f} vs calibrated {t['calibrated']['ece']:.4f}; calibration method: "
