@@ -4,11 +4,13 @@ An end-to-end, **educational** machine-learning project: a leakage-safe training
 
 > **Not a lending system.** This is a portfolio project. It is not a bank, not a lender, and not a validated or regulatory-compliant credit-decision tool. A model score never approves or rejects anyone; in LoanWise only a human officer can record a decision, with a reason.
 
-      ## Live demo
+## Live demo
 
-   A public demo has not been deployed yet. The steps are in "Deploy a public demo" below, and the link will be added here once the app is live.
+A public demo has not been deployed yet. The steps are in "Deploy a public demo" below, and the link will be added here once the app is live.
 
-   ## What is in the repository
+## What is in the repository
+
+| Part | Entry point | What it is |
 |---|---|---|
 | ML pipeline | `python -m src.train` | Leakage-safe training, evaluation, calibration, versioned artifacts, generated model card |
 | **LoanWise** | `streamlit run app/loanwise_app.py` | Landing page with a **Customer portal** and a **Bank officer portal**, SQLite persistence, role-based access |
