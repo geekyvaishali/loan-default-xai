@@ -1,6 +1,6 @@
 # Model card: Loan Default Risk (educational)
 
-**Version:** 20261022-061642-1d7556a  |  **Trained (UTC):** 2026-10-22T06:16:42+00:00
+**Version:** 20261023-193630-1d7556a  |  **Trained (UTC):** 2026-10-23T19:36:30+00:00
 **Algorithm:** logistic_regression (+ sigmoid probability calibration)
 **Why this model:** best CV roc_auc is logistic_regression (0.7556); one-standard-error rule picked the simplest model within 1 std of it (logistic_regression eligible)
 

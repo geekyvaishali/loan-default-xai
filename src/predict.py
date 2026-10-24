@@ -8,6 +8,7 @@ import joblib
 import numpy as np
 import pandas as pd
 
+from .attribution import explain_row
 from .config import ARTIFACT_DIR, RAW_FEATURES
 from .schema import SchemaError, ValidationReport, validate_frame
 
@@ -80,3 +81,8 @@ class LoanRiskPredictor:
         return {"probability": float(res["probability"]), "flagged": bool(res["flagged"]),
                 "threshold": self.threshold, "model_version": self.version,
                 "warnings": [w for w in str(res["warnings"]).split("; ") if w]}
+
+    def explain(self, record: dict, top_n: int = 8) -> dict:
+        """Per-applicant attribution of the model score (see src/attribution.py for the method used)."""
+        row = pd.DataFrame([record])[RAW_FEATURES]
+        return explain_row(self.model, row, self.schema, top_n)

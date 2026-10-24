@@ -171,10 +171,24 @@ def run_training(cfg: TrainConfig | None = None, data_path: Path = RAW_DATA_PATH
         "headline_test_metrics": {k: test["calibrated"][k] for k in ("roc_auc", "pr_auc", "brier", "ece")},
     }
     out_names = list(pipe[:-1].transform(X_tr.head(2)).columns)
+    explain_info = {
+        "reference_values": {**{c: float(X_tr[c].median()) for c in NUMERIC_COLS},
+                             **{c: str(X_tr[c].mode().iloc[0]) for c in CATEGORICAL_COLS}},
+    }
+    if selected == "logistic_regression":
+        z_train = pipe[:-1].transform(X_tr)
+        explain_info["transformed_means"] = {c: float(v) for c, v in z_train.mean().items()}
+    sample = X_va.sample(min(5000, len(X_va)), random_state=cfg.random_state)
+    global_importance = ev.permutation_importance(
+        lambda d: model.predict_proba(d)[:, 1], sample, y_va.loc[sample.index], RAW_FEATURES,
+        n_repeats=3, seed=cfg.random_state)
     schema = {"raw_features": RAW_FEATURES, "numeric": NUMERIC_COLS, "categorical": CATEGORICAL_COLS,
               "hard_bounds": HARD_BOUNDS, "training_range": TRAINING_RANGE,
-              "allowed_categories": ALLOWED_CATEGORIES, "model_input_columns": out_names}
+              "allowed_categories": ALLOWED_CATEGORIES, "model_input_columns": out_names,
+              "explain": explain_info}
     evaluation = {"candidates": candidates, "selected": selected, "test": test,
+                  "global_importance": global_importance,
+                  "global_importance_note": f"Permutation importance (ROC-AUC drop) on {len(sample)} validation rows.",
                   "baseline_logistic_regression_test": baseline,
                   "validation_selected": {"raw": ev.score_metrics(y_va, raw_val),
                                           "calibrated": ev.score_metrics(y_va, cal_val)}}

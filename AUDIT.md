@@ -34,8 +34,13 @@ Environment limits for this audit: no network, no `xgboost`/`lightgbm`/`shap`/`l
 ## Missing industry-relevant features
 Input validation, calibration analysis, PR-AUC, tests, versioned artifacts with metadata, drift checks, API layer, CI, a real model card, a sample input file, unpinned/unused dependencies (`imbalanced-learn` is never imported; `plotly` is listed twice).
 
-## Done in this phase (verified by running it)
-New `src/` modules: `config`, `schema` (validation + data-quality report), `features` (leak-safe transformer), `pipeline` (one raw-in/probability-out sklearn pipeline + calibrator), `evaluate`, `train` (60/20/20 split, CV on train only, one-SE model selection, calibration + threshold on validation only, single test evaluation), `predict` (single inference interface), `synthetic`. 35 unit/integration tests pass. New artifacts in `artifacts/` (model, metadata with data hash/versions/config, schema, evaluation, reference stats, history, generated model card).
+## Done (verified by running it)
+* **Phase 1, ML core:** `config`, `schema` (validation + data-quality report), `features` (leak-safe transformer), `pipeline` (one raw-in/probability-out pipeline + calibrator), `evaluate`, `train` (60/20/20 split, CV on train only, one-standard-error model selection, calibration + threshold on validation only, single test evaluation), `predict`, `attribution` (exact linear contributions, replacement fallback for other models), versioned `artifacts/` and a generated model card.
+* **Phase 2, LoanWise:** customer and officer portals (`app/loanwise_app.py`, `src/loanwise/`), scrypt password hashing, hashed server-side sessions with idle/absolute expiry and lockout, role checks inside the service layer, customer isolation, application status machine with mandatory decision reasons, audit trail, batch CSV assessment with size/row limits, downloadable report, demo seeding.
+* 88 automated tests pass (`python -m unittest discover -s tests -t .`), including access-control, session, workflow, persistence and batch tests. A real-model end-to-end run (seed, customer submit, officer decision, restart) also passed.
 
-## Not done yet (be honest with recruiters about this)
-Streamlit dashboard rewrite onto the new predictor; SHAP/LIME module + what-if lab; drift/monitoring module and page; FastAPI; Docker; README/architecture diagram/screenshots; `xgboost`/`lightgbm` candidates are coded but **untested** here (not installed); the CI workflow below has not been run on GitHub. The legacy app and `models/` still work unchanged.
+## Not done / not verified
+* **The Streamlit pages have no automated tests** and were not exercised in a browser during development; they call only the tested service layer.
+* `xgboost` / `lightgbm` candidates are coded but were not run during development (not installed there).
+* No FastAPI layer, Docker setup, live drift monitoring, or fairness assessment (the data has no protected-group labels).
+* The GitHub Actions workflow has not been observed running on GitHub.
