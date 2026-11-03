@@ -1,8 +1,15 @@
-# Runtime for LoanWise (what a hosted demo needs). Pinned to the versions this project was tested with
-# (Python 3.13; the committed artifacts/model.joblib was trained with scikit-learn 1.7.0).
-streamlit==1.60.0
-pandas==3.0.5
-numpy==2.3.0
-scikit-learn==1.7.0
-joblib==1.5.1
-plotly==6.9.0
+pandas
+numpy
+scikit-learn
+xgboost
+lightgbm
+shap
+lime
+streamlit
+matplotlib
+seaborn
+plotly
+joblib
+pyarrow
+imbalanced-learn
+plotly
