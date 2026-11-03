@@ -3,11 +3,3 @@ data/raw/*.csv
 data/processed/
 __pycache__/
 .vs/
-*.pyc
-.env
-.pytest_cache/
-.ipynb_checkpoints/
-data/loanwise.db
-data/loanwise.db-journal
-data/demo_credentials.txt
-.qodo/
